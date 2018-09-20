@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.v4.graphics.ColorUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +24,26 @@ public class StatusBarCompat {
     private static final int INVALID_VAL = -1;
     private static final int COLOR_DEFAULT = Color.parseColor("#20000000");
 
-    public void compat(Activity activity, int statusColor) {
+    public void compat(Activity activity, @ColorInt int statusColor) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(statusColor);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                View decorView = window.getDecorView();
+                if (decorView != null) {
+                    int vis = decorView.getSystemUiVisibility();
+                    if (isLightColor(statusColor)) {
+                        vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //black
+                    } else {
+                        vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //white
+                    }
+                    decorView.setSystemUiVisibility(vis);
+                }
+            }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -38,6 +52,16 @@ public class StatusBarCompat {
             setRootView(activity, true);
         }
 
+    }
+
+    /**
+     * calculate the color is light or dark
+     *
+     * @param color
+     * @return
+     */
+    private boolean isLightColor(@ColorInt int color) {
+        return ColorUtils.calculateLuminance(color) >= 0.5;
     }
 
     /**
