@@ -26,13 +26,14 @@ public class StatusBarCompat {
     public void compat(Activity activity, int statusColor) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (statusColor != INVALID_VAL) {
-                activity.getWindow().setStatusBarColor(statusColor);
-            }
+            Window window = activity.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(statusColor);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window win = activity.getWindow();
-            win.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            ViewGroup decorView = (ViewGroup) win.getDecorView();
+            Window window = activity.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            ViewGroup decorView = (ViewGroup) window.getDecorView();
             decorView.addView(createStatusBarView(activity, statusColor));
             setRootView(activity, true);
         }
@@ -68,7 +69,7 @@ public class StatusBarCompat {
             View childView = parent.getChildAt(i);
             if (childView instanceof ViewGroup) {
                 childView.setFitsSystemWindows(fitSystemWindows);
-                ((ViewGroup) childView).setClipToPadding(true);
+                ((ViewGroup) childView).setClipToPadding(fitSystemWindows);
             }
         }
     }
