@@ -24,7 +24,7 @@ public class StatusBarCompat {
     private static final int INVALID_VAL = -1;
     private static final int COLOR_DEFAULT = Color.parseColor("#20000000");
 
-    public void compat(Activity activity, @ColorInt int statusColor) {
+    public void setStatusBarColor(Activity activity, @ColorInt int statusColor) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
