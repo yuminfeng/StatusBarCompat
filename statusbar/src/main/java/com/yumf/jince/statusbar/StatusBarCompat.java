@@ -25,6 +25,27 @@ public class StatusBarCompat {
     private static final int COLOR_DEFAULT = Color.parseColor("#20000000");
 
     /**
+     * set status bar transparent .
+     *
+     * @param activity
+     */
+    public void setStatusBarTransparent(Activity activity) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            Window window = activity.getWindow();
+            View decorView = window.getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            window.setStatusBarColor(Color.TRANSPARENT);
+            decorView.setSystemUiVisibility(option);
+
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatus(activity, true);
+        }
+    }
+
+    /**
      * set status bar color .
      *
      * @param activity
@@ -110,7 +131,7 @@ public class StatusBarCompat {
      * @param activity
      * @param on
      */
-    public void setTranslucentStatus(Activity activity, boolean on) {
+    private void setTranslucentStatus(Activity activity, boolean on) {
         Window win = activity.getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
         final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
@@ -128,7 +149,7 @@ public class StatusBarCompat {
      * @param activity
      * @param on
      */
-    public void setTranslucentNavigation(Activity activity, boolean on) {
+    private void setTranslucentNavigation(Activity activity, boolean on) {
         Window win = activity.getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
         final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
