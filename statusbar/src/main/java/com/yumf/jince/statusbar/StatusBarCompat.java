@@ -24,6 +24,12 @@ public class StatusBarCompat {
     private static final int INVALID_VAL = -1;
     private static final int COLOR_DEFAULT = Color.parseColor("#20000000");
 
+    /**
+     * set status bar color .
+     *
+     * @param activity
+     * @param statusColor
+     */
     public void setStatusBarColor(Activity activity, @ColorInt int statusColor) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -55,7 +61,7 @@ public class StatusBarCompat {
     }
 
     /**
-     * calculate the color is light or dark
+     * calculate the color is light or dark.
      *
      * @param color
      * @return
@@ -65,7 +71,7 @@ public class StatusBarCompat {
     }
 
     /**
-     * create a view which it's height equal system status bar's height
+     * create a view which it's height equal system status bar's height.
      *
      * @param context
      * @param color
@@ -98,6 +104,12 @@ public class StatusBarCompat {
         }
     }
 
+    /**
+     * set status bar translucent or not.
+     *
+     * @param activity
+     * @param on
+     */
     public void setTranslucentStatus(Activity activity, boolean on) {
         Window win = activity.getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
@@ -110,6 +122,12 @@ public class StatusBarCompat {
         win.setAttributes(winParams);
     }
 
+    /**
+     * set navigation bar translucent or not.
+     *
+     * @param activity
+     * @param on
+     */
     public void setTranslucentNavigation(Activity activity, boolean on) {
         Window win = activity.getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();

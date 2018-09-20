@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         StatusBarCompat compat = new StatusBarCompat();
-        compat.setStatusBarColor(this, Color.GRAY);
+        compat.setStatusBarColor(this, Color.GREEN);
 
         findViewById(R.id.text).setOnClickListener(new View.OnClickListener() {
             @Override
