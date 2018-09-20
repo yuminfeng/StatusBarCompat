@@ -18,7 +18,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".SetStatusBarColorActivity" />
-        <activity android:name=".SetStatusBarTransparentActivity"></activity>
+        <activity android:name=".SetStatusBarTransparentActivity" />
+        <activity android:name=".SetStatusBarHideActivity" />
+        <activity
+            android:name=".SetStatusBarShowActivity"
+            android:theme="@style/AppTheme.FullScreen" />
     </application>
 
 </manifest>

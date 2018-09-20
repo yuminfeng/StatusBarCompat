@@ -25,6 +25,39 @@ public class StatusBarCompat {
     private static final int COLOR_DEFAULT = Color.parseColor("#20000000");
 
     /**
+     * set systemUI hide or not
+     *
+     * @param activity
+     */
+    public void setFullScreen(Activity activity, boolean fullScreen) {
+
+        if (fullScreen) {
+            Window window = activity.getWindow();
+            View decorView = window.getDecorView();
+            // Set the IMMERSIVE flag.
+            // Set the content to appear under the system bars so that the content
+            // doesn't resize when the system bars hide and show.
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            decorView.setSystemUiVisibility(option);
+        } else {
+            Window window = activity.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+            //don't work
+//            View decorView = window.getDecorView();
+//            int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+//            decorView.setSystemUiVisibility(option);
+        }
+    }
+
+    /**
      * set status bar transparent .
      *
      * @param activity

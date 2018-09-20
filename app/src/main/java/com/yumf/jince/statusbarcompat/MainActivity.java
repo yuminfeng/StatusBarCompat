@@ -29,5 +29,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SetStatusBarTransparentActivity.class));
             }
         });
+
+        findViewById(R.id.statusBar_hide).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SetStatusBarHideActivity.class));
+            }
+        });
+
+        findViewById(R.id.statusBar_show).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SetStatusBarShowActivity.class));
+            }
+        });
     }
 }
