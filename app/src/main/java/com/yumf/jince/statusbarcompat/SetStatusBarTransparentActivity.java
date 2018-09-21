@@ -13,6 +13,6 @@ public class SetStatusBarTransparentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_set_status_bar_transparent);
 
         StatusBarCompat compat = new StatusBarCompat();
-        compat.setStatusBarTransparent(this);
+        compat.setStatusBarTransparent(this, true);
     }
 }

@@ -61,8 +61,9 @@ public class StatusBarCompat {
      * set status bar transparent .
      *
      * @param activity
+     * @param applyNav whether also apply to system navigation bar
      */
-    public void setStatusBarTransparent(Activity activity) {
+    public void setStatusBarTransparent(Activity activity, boolean applyNav) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
@@ -71,6 +72,11 @@ public class StatusBarCompat {
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             window.setStatusBarColor(Color.TRANSPARENT);
+            if (applyNav) {
+                option = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+                window.setNavigationBarColor(Color.TRANSPARENT);
+            }
             decorView.setSystemUiVisibility(option);
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
