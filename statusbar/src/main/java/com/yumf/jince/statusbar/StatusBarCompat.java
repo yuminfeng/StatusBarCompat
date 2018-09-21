@@ -179,13 +179,10 @@ public class StatusBarCompat {
      * @param fitSystemWindows
      */
     private void setRootView(Activity activity, boolean fitSystemWindows) {
-        ViewGroup parent = activity.findViewById(Window.ID_ANDROID_CONTENT);
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            View childView = parent.getChildAt(i);
-            if (childView instanceof ViewGroup) {
-                childView.setFitsSystemWindows(fitSystemWindows);
-                ((ViewGroup) childView).setClipToPadding(fitSystemWindows);
-            }
+        ViewGroup parent = activity.findViewById(android.R.id.content);
+        View child = parent.getChildAt(0);
+        if (child != null && child instanceof ViewGroup) {
+            child.setFitsSystemWindows(fitSystemWindows);
         }
     }
 
