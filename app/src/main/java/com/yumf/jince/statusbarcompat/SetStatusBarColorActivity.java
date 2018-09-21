@@ -13,7 +13,12 @@ public class SetStatusBarColorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_status_bar_color);
 
-        StatusBarCompat compat = new StatusBarCompat();
-        compat.setStatusBarColor(this, ContextCompat.getColor(this, R.color.colorPrimaryDark));
+//        StatusBarCompat compat = new StatusBarCompat(this);
+//        compat.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+
+        StatusBarCompat.newBuilder()
+                .statusColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+                .build(this)
+                .apply();
     }
 }

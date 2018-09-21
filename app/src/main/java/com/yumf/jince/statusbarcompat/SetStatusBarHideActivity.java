@@ -13,7 +13,12 @@ public class SetStatusBarHideActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_set_status_bar_hide);
         setContentView(R.layout.activity_set_status_bar_transparent);
 
-        StatusBarCompat compat = new StatusBarCompat();
-        compat.setFullScreen(this, true);
+//        StatusBarCompat compat = new StatusBarCompat(this);
+//        compat.setFullScreen(true);
+
+        StatusBarCompat.newBuilder()
+                .fullScreen(true)
+                .build(this)
+                .apply();
     }
 }

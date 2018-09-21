@@ -21,18 +21,45 @@ import android.widget.FrameLayout;
 
 public class StatusBarCompat {
 
-    private static final int INVALID_VAL = -1;
-    private static final int COLOR_DEFAULT = Color.parseColor("#20000000");
+    private static final int ACTION_STATUS_BAR_COLOR = 1;
+    private static final int ACTION_SYSTEM_UI_TRANSPARENT = 2;
+    private static final int ACTION_SYSTEM_UI_HIDE_OR_SHOW = 3;
+
+    private Activity mActivity;
+    private Builder mBuilder;
+
+    public StatusBarCompat(Activity activity) {
+        this.mActivity = activity;
+    }
+
+    private StatusBarCompat(Activity activity, Builder builder) {
+        this.mActivity = activity;
+        this.mBuilder = builder;
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public void apply() {
+        if (mBuilder.type == ACTION_STATUS_BAR_COLOR) {
+            setStatusBarColor(mBuilder.statusColor);
+        } else if (mBuilder.type == ACTION_SYSTEM_UI_TRANSPARENT) {
+            setStatusBarTransparent(mBuilder.applyNavigation);
+        } else if (mBuilder.type == ACTION_SYSTEM_UI_HIDE_OR_SHOW) {
+            setFullScreen(mBuilder.systemUIShow);
+        }
+    }
 
     /**
      * set systemUI hide or not
      *
-     * @param activity
+     * @param fullScreen
      */
-    public void setFullScreen(Activity activity, boolean fullScreen) {
+    public void setFullScreen(boolean fullScreen) {
 
         if (fullScreen) {
-            Window window = activity.getWindow();
+            Window window = mActivity.getWindow();
             View decorView = window.getDecorView();
             // Set the IMMERSIVE flag.
             // Set the content to appear under the system bars so that the content
@@ -45,7 +72,7 @@ public class StatusBarCompat {
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             decorView.setSystemUiVisibility(option);
         } else {
-            Window window = activity.getWindow();
+            Window window = mActivity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
             //don't work
@@ -60,14 +87,13 @@ public class StatusBarCompat {
     /**
      * set status bar transparent .
      *
-     * @param activity
      * @param applyNav whether also apply to system navigation bar
      */
-    public void setStatusBarTransparent(Activity activity, boolean applyNav) {
+    private void setStatusBarTransparent(boolean applyNav) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            Window window = activity.getWindow();
+            Window window = mActivity.getWindow();
             View decorView = window.getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
@@ -80,20 +106,19 @@ public class StatusBarCompat {
             decorView.setSystemUiVisibility(option);
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(activity, true);
+            setTranslucentStatus(mActivity, true);
         }
     }
 
     /**
      * set status bar color .
      *
-     * @param activity
      * @param statusColor
      */
-    public void setStatusBarColor(Activity activity, @ColorInt int statusColor) {
+    private void setStatusBarColor(@ColorInt int statusColor) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = activity.getWindow();
+            Window window = mActivity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(statusColor);
@@ -111,11 +136,11 @@ public class StatusBarCompat {
                 }
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = activity.getWindow();
+            Window window = mActivity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             ViewGroup decorView = (ViewGroup) window.getDecorView();
-            decorView.addView(createStatusBarView(activity, statusColor));
-            setRootView(activity, true);
+            decorView.addView(createStatusBarView(mActivity, statusColor));
+            setRootView(mActivity, true);
         }
 
     }
@@ -185,11 +210,10 @@ public class StatusBarCompat {
     /**
      * set navigation bar translucent or not.
      *
-     * @param activity
      * @param on
      */
-    private void setTranslucentNavigation(Activity activity, boolean on) {
-        Window win = activity.getWindow();
+    private void setTranslucentNavigation(boolean on) {
+        Window win = mActivity.getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
         final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
         if (on) {
@@ -213,5 +237,39 @@ public class StatusBarCompat {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    public static class Builder {
+
+        @ColorInt
+        private int statusColor;
+
+        private int type;
+
+        private boolean applyNavigation;
+
+        private boolean systemUIShow;
+
+        public Builder statusColor(@ColorInt int statusColor) {
+            this.statusColor = statusColor;
+            this.type = ACTION_STATUS_BAR_COLOR;
+            return this;
+        }
+
+        public Builder statusBarTransparent(boolean applyNav) {
+            this.applyNavigation = applyNav;
+            this.type = ACTION_SYSTEM_UI_TRANSPARENT;
+            return this;
+        }
+
+        public Builder fullScreen(boolean fullscreen) {
+            this.systemUIShow = fullscreen;
+            this.type = ACTION_SYSTEM_UI_HIDE_OR_SHOW;
+            return this;
+        }
+
+        public StatusBarCompat build(Activity activity) {
+            return new StatusBarCompat(activity, this);
+        }
     }
 }
