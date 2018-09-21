@@ -23,13 +23,21 @@ dependencies {
 
 - **开始使用**
 ```sh
-StatusBarCompat compat = new StatusBarCompat();
 //设置状态栏颜色
-compat.setStatusBarColor(this, Color.GRAY);
+StatusBarCompat.newBuilder()
+                .statusColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+                .build(this)
+                .apply();
 //设置状态栏透明
-compat.setStatusBarTransparent(this);
+StatusBarCompat.newBuilder()
+                .statusBarTransparent(true)
+                .build(this)
+                .apply();
 //设置全屏模式
-compat.setFullScreen(this, true);
+StatusBarCompat.newBuilder()
+                .fullScreen(true)
+                .build(this)
+                .apply();
 ```
 ## csdn
    <a href="https://blog.csdn.net/yuminfeng728/article/details/82796826">沉浸状态栏</a>
