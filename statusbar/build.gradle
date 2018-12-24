@@ -32,3 +32,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+task makeJar(type: Copy) {
+    delete('build/outputs/statusbar.jar')
+    from('build/intermediates/packaged-classes/release/')
+    into('build/outputs/')
+    include('classes.jar')
+    rename('classes.jar', 'statusbar.jar')
+}
+
+makeJar.dependsOn(build)
+
