@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.v4.graphics.ColorUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,10 @@ public class StatusBarCompat {
 
     /**
      * set systemUI hide or not
+     * <p>
+     * LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER: window不允许和刘海屏重叠
+     * LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT: 默认情况下，全屏window不会使用到刘海区域，非全屏window可正常使用刘海区域
+     * LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES: 允许window扩展到刘海区
      *
      * @param fullScreen
      */
@@ -74,6 +79,12 @@ public class StatusBarCompat {
                     | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             decorView.setSystemUiVisibility(option);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                WindowManager.LayoutParams lp = window.getAttributes();
+                lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+                window.setAttributes(lp);
+            }
         } else {
             Window window = mActivity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
