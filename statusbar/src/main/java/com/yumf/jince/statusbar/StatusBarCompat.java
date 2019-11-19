@@ -24,6 +24,7 @@ public class StatusBarCompat {
     private static final int ACTION_STATUS_BAR_COLOR = 1;
     private static final int ACTION_SYSTEM_UI_TRANSPARENT = 2;
     private static final int ACTION_SYSTEM_UI_HIDE_OR_SHOW = 3;
+    private static final int ACTION_SYSTEM_BAR_TRANSPARENT = 4;
 
     private Activity mActivity;
     private Builder mBuilder;
@@ -48,6 +49,8 @@ public class StatusBarCompat {
             setStatusBarTransparent(mBuilder.applyNavigation);
         } else if (mBuilder.type == ACTION_SYSTEM_UI_HIDE_OR_SHOW) {
             setFullScreen(mBuilder.systemUIShow);
+        } else if (mBuilder.type == ACTION_SYSTEM_BAR_TRANSPARENT) {
+            setStatusBarTransparent();
         }
     }
 
@@ -89,6 +92,7 @@ public class StatusBarCompat {
      *
      * @param applyNav whether also apply to system navigation bar
      */
+    @Deprecated
     private void setStatusBarTransparent(boolean applyNav) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -108,6 +112,17 @@ public class StatusBarCompat {
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setTranslucentStatus(mActivity, true);
         }
+    }
+
+    /**
+     * set status bar transparent .
+     */
+    private void setStatusBarTransparent() {
+        Window win = mActivity.getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        winParams.flags |= bits;
+        win.setAttributes(winParams);
     }
 
     /**
@@ -256,6 +271,11 @@ public class StatusBarCompat {
         public Builder statusBarTransparent(boolean applyNav) {
             this.applyNavigation = applyNav;
             this.type = ACTION_SYSTEM_UI_TRANSPARENT;
+            return this;
+        }
+
+        public Builder statusBarTransparent() {
+            this.type = ACTION_SYSTEM_BAR_TRANSPARENT;
             return this;
         }
 
