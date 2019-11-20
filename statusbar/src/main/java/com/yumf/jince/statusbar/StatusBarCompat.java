@@ -85,6 +85,9 @@ public class StatusBarCompat {
                 lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
                 window.setAttributes(lp);
             }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+                decorView.requestApplyInsets();
+            }
         } else {
             Window window = mActivity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
