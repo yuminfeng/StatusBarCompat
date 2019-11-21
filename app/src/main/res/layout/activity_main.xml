@@ -34,5 +34,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="set StatusBar show" />
+
+        <Button
+            android:id="@+id/setActionBar_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="set actionBar show" />
     </LinearLayout>
 </ScrollView>

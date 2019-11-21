@@ -1,7 +1,7 @@
 package com.yumf.jince.statusbarcompat;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.yumf.jince.statusbar.StatusBarCompat;
 

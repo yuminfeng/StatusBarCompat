@@ -1,12 +1,9 @@
 package com.yumf.jince.statusbarcompat;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-
-import com.yumf.jince.statusbar.StatusBarCompat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SetStatusBarShowActivity.class));
+            }
+        });
+
+        findViewById(R.id.setActionBar_show).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SetActionBarActivity.class));
             }
         });
     }
