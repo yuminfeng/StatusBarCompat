@@ -51,7 +51,7 @@ public class StatusBarCompat {
         } else if (mBuilder.type == ACTION_SYSTEM_UI_HIDE_OR_SHOW) {
             setFullScreen(mBuilder.systemUIShow);
         } else if (mBuilder.type == ACTION_SYSTEM_BAR_TRANSPARENT) {
-            setStatusBarTransparent();
+            setTranslucentStatus(true);
         }
     }
 
@@ -91,13 +91,6 @@ public class StatusBarCompat {
         } else {
             Window window = mActivity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-            //don't work
-//            View decorView = window.getDecorView();
-//            int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-//            decorView.setSystemUiVisibility(option);
         }
     }
 
@@ -124,19 +117,8 @@ public class StatusBarCompat {
             decorView.setSystemUiVisibility(option);
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(mActivity, true);
+            setTranslucentStatus(true);
         }
-    }
-
-    /**
-     * set status bar transparent .
-     */
-    private void setStatusBarTransparent() {
-        Window win = mActivity.getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-        winParams.flags |= bits;
-        win.setAttributes(winParams);
     }
 
     /**
@@ -148,21 +130,19 @@ public class StatusBarCompat {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = mActivity.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(statusColor);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 View decorView = window.getDecorView();
-                if (decorView != null) {
-                    int vis = decorView.getSystemUiVisibility();
-                    if (isLightColor(statusColor)) {
-                        vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //black
-                    } else {
-                        vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //white
-                    }
-                    decorView.setSystemUiVisibility(vis);
+                int vis = decorView.getSystemUiVisibility();
+                if (isLightColor(statusColor)) {
+                    vis |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //black
+                } else {
+                    vis &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; //white
                 }
+                decorView.setSystemUiVisibility(vis);
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = mActivity.getWindow();
@@ -210,7 +190,7 @@ public class StatusBarCompat {
     private void setRootView(Activity activity, boolean fitSystemWindows) {
         ViewGroup parent = activity.findViewById(android.R.id.content);
         View child = parent.getChildAt(0);
-        if (child != null && child instanceof ViewGroup) {
+        if (child instanceof ViewGroup) {
             child.setFitsSystemWindows(fitSystemWindows);
         }
     }
@@ -218,11 +198,10 @@ public class StatusBarCompat {
     /**
      * set status bar translucent or not.
      *
-     * @param activity
      * @param on
      */
-    private void setTranslucentStatus(Activity activity, boolean on) {
-        Window win = activity.getWindow();
+    private void setTranslucentStatus(boolean on) {
+        Window win = mActivity.getWindow();
         WindowManager.LayoutParams winParams = win.getAttributes();
         final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         if (on) {
