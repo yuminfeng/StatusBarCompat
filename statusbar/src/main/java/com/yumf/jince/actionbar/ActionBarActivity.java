@@ -16,6 +16,7 @@ public abstract class ActionBarActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private TextView mTitle;
+    private TextView mActionRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +24,8 @@ public abstract class ActionBarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_action_bar);
 
         mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setTitle("");
-        mTitle = findViewById(R.id.tvTitle);
+        mTitle = findViewById(R.id.title_center);
+        mActionRight = findViewById(R.id.action_right);
         FrameLayout mContentLayout = findViewById(R.id.content_layout);
 
         //将继承 TopBarBaseActivity 的布局解析到 FrameLayout 里面
@@ -34,7 +35,7 @@ public abstract class ActionBarActivity extends AppCompatActivity {
     }
 
     private void initToolBar() {
-        setSupportActionBar(mToolbar);
+//        setSupportActionBar(mToolbar); //这里用不到ActionBar的一些特性，所以无需此操作
         mToolbar.setNavigationIcon(R.drawable.ic_return_white_24dp);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +56,21 @@ public abstract class ActionBarActivity extends AppCompatActivity {
         mToolbar.setBackgroundColor(color);
     }
 
-    protected void setTitleName(String titles) {
-        mTitle.setText(titles);
+    protected void setTitleName(String title) {
+        mTitle.setText(title);
+    }
+
+    protected void setRightMenu(String rightStr, final View.OnClickListener listener) {
+        if (!mActionRight.isShown())
+            mActionRight.setVisibility(View.VISIBLE);
+        mActionRight.setText(rightStr);
+        mActionRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onClick(v);
+                }
+            }
+        });
     }
 }

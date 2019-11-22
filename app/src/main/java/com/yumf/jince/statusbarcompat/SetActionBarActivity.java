@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yumf.jince.actionbar.ActionBarActivity;
 
@@ -28,9 +30,14 @@ public class SetActionBarActivity extends ActionBarActivity {
 
         setStatusBarColor(ContextCompat.getColor(SetActionBarActivity.this, R.color.colorPrimaryDark));
         setTitleName("BaseActivity");
+        setRightMenu("完成", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SetActionBarActivity.this, "Done", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         evaluator = new ArgbEvaluator(); //颜色渐变计算器
-
         seek_progress = findViewById(R.id.seek_progress);
         seekBar = findViewById(R.id.seekBar_color);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
