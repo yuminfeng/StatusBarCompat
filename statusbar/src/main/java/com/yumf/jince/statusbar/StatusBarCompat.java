@@ -89,7 +89,12 @@ public class StatusBarCompat {
             }
         } else {
             Window window = mActivity.getWindow();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            View decorView = window.getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+                decorView.requestApplyInsets();
+            }
         }
     }
 

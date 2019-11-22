@@ -2,6 +2,7 @@ package com.yumf.jince.statusbarcompat;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.yumf.jince.statusbar.StatusBarCompat;
 
@@ -10,15 +11,26 @@ public class SetStatusBarShowActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_set_status_bar_show);
-        setContentView(R.layout.activity_set_status_bar_transparent);
+        setContentView(R.layout.activity_set_status_bar_hide_show);
 
-//        StatusBarCompat compat = new StatusBarCompat(this);
-//        compat.setFullScreen(false);
+        findViewById(R.id.hide).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StatusBarCompat.newBuilder()
+                        .fullScreen(true)
+                        .build(SetStatusBarShowActivity.this)
+                        .apply();
+            }
+        });
 
-        StatusBarCompat.newBuilder()
-                .fullScreen(false)
-                .build(this)
-                .apply();
+        findViewById(R.id.show).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StatusBarCompat.newBuilder()
+                        .fullScreen(false)
+                        .build(SetStatusBarShowActivity.this)
+                        .apply();
+            }
+        });
     }
 }

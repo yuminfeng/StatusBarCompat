@@ -21,9 +21,7 @@
         <activity android:name=".SetStatusBarColorActivity" />
         <activity android:name=".SetStatusBarTransparentActivity" />
         <activity android:name=".SetStatusBarHideActivity" />
-        <activity
-            android:name=".SetStatusBarShowActivity"
-            android:theme="@style/AppTheme.FullScreen" />
+        <activity android:name=".SetStatusBarShowActivity" />
     </application>
 
 </manifest>
